@@ -1,14 +1,24 @@
 ## Code Education | Desenvolvimento de Aplicações Modernas e Escaláveis com Microsserviços
 
-Full Cycle Turma 7
+Code Education - Full Cycle Turma 7.  
+
+As seguintes tecnologias são utilizadas neste projeto:  
+* Nginx
+* PHP-FPM
+* Redis
+* MySQL
+
+---
 
 ## DevOps | Iniciando com Docker - Publicando imagem Laravel
 
-Clique [aqui](https://hub.docker.com/r/kaissi/devops-docker-laravel) para acessar a imagem docker.
+Image Docker: [https://hub.docker.com/r/kaissi/devops-docker-laravel](https://hub.docker.com/r/kaissi/devops-docker-laravel).
 
-## Gerando arquivos Laravel
+## 1. Gerando arquivos Laravel
 
 Na pasta [start](start/) está o [Dockerfile](start/Dockerfile) que é utilizado para gerar os arquivos Laravel.
+
+**_Após os arquivos Laravel terem sido gerados, não será mais necessário executar este passo._**
 
 ```bash
 cd start
@@ -35,20 +45,22 @@ docker volume rm laravel-data
 mv ../{docker-compose.yaml,LICENSE,README.md} src \
     && for file in $(ls -A src); do mv src/${file} ../; done \
     && rm -rf src
+
+cd ../
 ```
 
-Alterar no arquivo [.env](.env):
+Fazer as seguintes alterações no arquivo [.env](.env):
 
-> MYSQL_HEALTH_PORT_TARGET=8081<br>
-> MYSQL_HEALTH_READINESS_FILE=readiness.sh<br>
-> DB_HOST=db<br>
-> DB_PASSWORD=root<br>
-> REDIS_HOST=redis<br>
+> MYSQL_HEALTH_PORT_TARGET=8081  
+> MYSQL_HEALTH_READINESS_FILE=readiness.sh  
+> DB_HOST=db  
+> DB_PASSWORD=root  
+> REDIS_HOST=redis  
+---
 
-**Após os arquivos Laravel terem sido gerados, não será mais necessário executar este passo.**
+## 2. Executando o sistema
 
-## Subindo todos os sistemas
-Na pasta raiz do projeto, onde agora estão os arquivos Laravael, está também o [docker-compose.yaml](docker-compose.yaml) que utilizaremos para subir todos os sistemas.
+Na pasta raiz do projeto, onde agora estão os arquivos Laravael, também está o [docker-compose.yaml](docker-compose.yaml) que utilizaremos para executar o sistema.
 
 ```bash
 docker-compose up --detach --build
