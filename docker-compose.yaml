@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+    app:
+        image: kaissi/devops-docker-laravel:latest
+        container_name: app
+        volumes:
+            - .:/var/www
+        environment:
+            - MYSQL_HEALTH_PORT_TARGET=${MYSQL_HEALTH_PORT_TARGET}
+        networks:
+            - app-network
+        depends_on:
+            - db
+            - redis
+
+    nginx:
+        build: .docker/nginx
+        container_name: nginx
+        restart: always
+        tty: true
+        ports:
+            - "8000:80"
+        volumes:
+            - .:/var/www
+        networks:
+            - app-network
+
+    db:
+        build:
+            context: .docker/mysql
+            args:
+                HEALTH_READINESS_FILE: ${MYSQL_HEALTH_READINESS_FILE}
+        command: --innodb-use-native-aio=0
+        container_name: db
+        restart: always
+        tty: true
+        ports:
+            - "3306:3306"
+        volumes:
+            -  .docker/mysql/dbdata:/var/lib/mysql
+        environment:
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+            - MYSQL_USER=${DB_USERNAME}
+            - HEALTH_PORT_TARGET=${MYSQL_HEALTH_PORT_TARGET}
+            - HEALTH_READINESS_FILE=${MYSQL_HEALTH_READINESS_FILE}
+        networks:
+            - app-network
+        healthcheck:
+            test: ["CMD", "readiness.sh"]
+            interval: 10s
+            timeout: 10s
+            retries: 3
+            start_period: 20s
+
+    redis:
+        image: redis:alpine
+        container_name: redis
+        expose:
+            - 6379
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
+
