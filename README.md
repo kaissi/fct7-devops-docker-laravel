@@ -56,7 +56,6 @@ Fazer as seguintes alterações no arquivo [.env](.env):
 > DB_HOST=db  
 > DB_PASSWORD=root  
 > REDIS_HOST=redis  
----
 
 ## 2. Executando o sistema
 
