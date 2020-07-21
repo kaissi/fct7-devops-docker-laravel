@@ -56,3 +56,11 @@ Na pasta raiz do projeto, onde agora estão os arquivos Laravael, também está 
 ```bash
 docker-compose up --detach --build
 ```
+
+## 3. Gerando docker otimizado para produção
+
+Na pasta raiz do projeto fazer:
+
+```bash
+docker build . -t kaissi/devops-docker-laravel-optimized:latest -f Dockerfile.build
+```
