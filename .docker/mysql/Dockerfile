@@ -1,12 +1,13 @@
 FROM mysql:5.7
 
-ARG HEALTH_READINESS_FILE
+ENV DOCKERIZE_VERSION v0.6.1
 
-COPY --from=kaissi/health-server:latest /usr/local/health-server/health-server /usr/local/bin/
-
-COPY wait-for-entrypoint.sh /usr/local/bin/
-COPY ${HEALTH_READINESS_FILE} /usr/local/bin/
-
-RUN usermod -u 1000 mysql
-
-ENTRYPOINT [ "wait-for-entrypoint.sh" ]
+RUN apt update \
+    && apt install -y --no-install-recommends \
+        ca-certificates \
+        wget \
+    && rm -rf /var/lib/apt/lists/* \
+    && wget https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
+        && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
+        && rm dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz \
+    && usermod -u 1000 mysql

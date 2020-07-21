@@ -1,13 +1,25 @@
 version: '3.8'
 
+x-vars:
+    var-1: &MYSQL_HOST          "MYSQL_HOST=db"
+    var-3: &MYSQL_DATABASE      "MYSQL_DATABASE=laravel"
+    var-4: &MYSQL_USER          "MYSQL_USER=root"
+    var-5: &MYSQL_ROOT_PASSWORD "MYSQL_ROOT_PASSWORD=root"
+    var-6: &REDIS_HOST          "REDIS_HOST=redis"
+
 services:
     app:
         image: kaissi/devops-docker-laravel:latest
+        entrypoint: dockerize -template ./.docker/app/.env.tmpl:.env -wait tcp://db:3306 -timeout 20s entrypoint.sh
         container_name: app
         volumes:
             - .:/var/www
         environment:
-            - MYSQL_HEALTH_PORT_TARGET=${MYSQL_HEALTH_PORT_TARGET}
+            - *MYSQL_HOST
+            - *MYSQL_DATABASE
+            - *MYSQL_USER
+            - *MYSQL_ROOT_PASSWORD
+            - *REDIS_HOST
         networks:
             - app-network
         depends_on:
@@ -25,12 +37,11 @@ services:
             - .:/var/www
         networks:
             - app-network
+        depends_on:
+            - app
 
     db:
-        build:
-            context: .docker/mysql
-            args:
-                HEALTH_READINESS_FILE: ${MYSQL_HEALTH_READINESS_FILE}
+        build: .docker/mysql
         command: --innodb-use-native-aio=0
         container_name: db
         restart: always
@@ -40,15 +51,13 @@ services:
         volumes:
             -  .docker/mysql/dbdata:/var/lib/mysql
         environment:
-            - MYSQL_DATABASE=${DB_DATABASE}
-            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-            - MYSQL_USER=${DB_USERNAME}
-            - HEALTH_PORT_TARGET=${MYSQL_HEALTH_PORT_TARGET}
-            - HEALTH_READINESS_FILE=${MYSQL_HEALTH_READINESS_FILE}
+            - *MYSQL_DATABASE
+            - *MYSQL_USER
+            - *MYSQL_ROOT_PASSWORD
         networks:
             - app-network
         healthcheck:
-            test: ["CMD", "readiness.sh"]
+            test: ["CMD-SHELL", "dockerize -wait tcp://localhost:3306 -timeout 1s"]
             interval: 10s
             timeout: 10s
             retries: 3

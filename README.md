@@ -49,14 +49,6 @@ mv ../{docker-compose.yaml,LICENSE,README.md} src \
 cd ../
 ```
 
-Fazer as seguintes alterações no arquivo [.env](.env):
-
-> MYSQL_HEALTH_PORT_TARGET=8081  
-> MYSQL_HEALTH_READINESS_FILE=readiness.sh  
-> DB_HOST=db  
-> DB_PASSWORD=root  
-> REDIS_HOST=redis  
-
 ## 2. Executando o sistema
 
 Na pasta raiz do projeto, onde agora estão os arquivos Laravael, também está o [docker-compose.yaml](docker-compose.yaml) que utilizaremos para executar o sistema.
