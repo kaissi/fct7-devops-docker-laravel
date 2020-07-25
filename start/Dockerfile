@@ -1,6 +1,6 @@
 FROM php:7.3.6-fpm-alpine3.9
 
-ENV DOCKERIZE_VERSION v0.6.1    
+ENV DOCKERIZE_VERSION v0.6.1
 RUN apk add --no-cache \
         openssl \
         shadow \
@@ -29,4 +29,3 @@ VOLUME /var/www
 RUN composer create-project laravel/laravel . \
     && ln -s public html
 
-EXPOSE 9000

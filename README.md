@@ -42,7 +42,7 @@ docker rm -f generate-laravel-files
 
 docker volume rm laravel-data
 
-mv ../{docker-compose.yaml,LICENSE,README.md} src \
+mv ../{docker-compose.yaml,Dockerfile.build,LICENSE,README.md} src \
     && for file in $(ls -A src); do mv src/${file} ../; done \
     && rm -rf src
 
@@ -62,5 +62,7 @@ docker-compose up --detach --build
 Na pasta raiz do projeto fazer:
 
 ```bash
-docker build . -t kaissi/devops-docker-laravel-optimized:latest -f Dockerfile.build
+docker build . -t kaissi/devops-docker-laravel-optimized:latest -f Dockerfile.build --build-arg APP_PORT=9000
 ```
+
+Note que o argumento APP_PORT é opcional. Se não passado, irá com o valor padrão 9000
