@@ -1,6 +1,12 @@
 FROM nginx:1.15.0-alpine
 
-ENV DOCKERIZE_VERSION v0.6.1  
+ARG APP_HOST
+ARG APP_PORT
+ENV \
+    APP_HOST="${APP_HOST}" \
+    APP_PORT="${APP_PORT}" \
+    DOCKERIZE_VERSION="v0.6.1"
+
 RUN rm /etc/nginx/conf.d/default.conf \
     && apk add --no-cache \
         openssl \
@@ -9,5 +15,11 @@ RUN rm /etc/nginx/conf.d/default.conf \
         && rm dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz
 
 COPY ./nginx.conf.tmpl /tmp
-COPY ./entrypoint.sh /usr/local/bin
 
+ENTRYPOINT [ "/bin/sh", "-c", "exec \
+    dockerize \
+        -template ./tmp/nginx.conf.tmpl:/etc/nginx/conf.d/nginx.conf \
+        -wait tcp://${APP_HOST}:${APP_PORT} \
+        -timeout 20s \
+        nginx -g 'daemon off;'" \
+]

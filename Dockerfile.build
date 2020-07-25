@@ -26,9 +26,16 @@ RUN composer install \
     && php artisan key:generate \
     && php artisan cache:clear \
     && chmod -R 775 storage \
-    && npm install
+    && npm install \
+    && chown -R www-data.www-data /var/www
 
 FROM php:7.3.6-fpm-alpine3.9
+
+ARG APP_PORT="9000"
+
+RUN sed -i "s/#*\s*listen\s\+=\s\+127.0.0.1:9000/listen = 127.0.0.1:${APP_PORT}/;" /usr/local/etc/php-fpm.d/www.conf.default \
+    && sed -i "s/#*\s*listen\s\+=\s\+127.0.0.1:9000/listen = 127.0.0.1:${APP_PORT}/;" /usr/local/etc/php-fpm.d/www.conf \
+    && sed -i "s/#*\s*listen\s\+=\s\+9000/listen = ${APP_PORT}/;" /usr/local/etc/php-fpm.d/zz-docker.conf
 
 RUN apk add --no-cache \
         mysql-client \
@@ -39,6 +46,6 @@ WORKDIR /var/www
 
 COPY --from=builder /var/www .
 
-EXPOSE 9000
+EXPOSE ${APP_PORT}
 
 ENTRYPOINT [ "php-fpm" ]
