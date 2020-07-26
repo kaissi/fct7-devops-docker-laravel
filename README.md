@@ -12,7 +12,8 @@ As seguintes tecnologias são utilizadas neste projeto:
 
 ## DevOps | Iniciando com Docker - Publicando imagem Laravel
 
-Image Docker: [https://hub.docker.com/r/kaissi/devops-docker-laravel](https://hub.docker.com/r/kaissi/devops-docker-laravel).
+Imagem Docker - Laravel: [https://hub.docker.com/r/kaissi/devops-docker-laravel](https://hub.docker.com/r/kaissi/devops-docker-laravel).  
+Imagem Docker - Desafio Docker: [https://hub.docker.com/r/kaissi/codeeducation](https://hub.docker.com/r/kaissi/codeeducation).
 
 ## 1. Gerando arquivos Laravel
 
