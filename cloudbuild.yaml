@@ -1,8 +1,11 @@
+substitutions:
+  _DOCKER_COMPOSE_VERSION: 1.25.5
+
 steps:
 
 - id: "Rodando docker-compose"
-  name: 'gcr.io/${PROJECT_ID}/docker-compose:1.25.5'
-  args: ['-f', 'docker-compose.yaml', '-f', 'docker-compose.cloudbuild.yaml','up','-d']
+  name: 'gcr.io/${PROJECT_ID}/docker-compose:${_DOCKER_COMPOSE_VERSION}'
+  args: ['-f docker-compose.yaml', '-f docker-compose.cloudbuild.yaml', 'up', '--detach', '--build']
 
 - id: "Rodando docker ps"
   name: 'gcr.io/cloud-builders/docker'
