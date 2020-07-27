@@ -1,0 +1,87 @@
+version: '3.8'
+
+x-vars:
+    var-1: &MYSQL_HOST          "MYSQL_HOST=db"
+    var-2: &MYSQL_PORT          "MYSQL_PORT=3306"
+    var-3: &MYSQL_DATABASE      "MYSQL_DATABASE=laravel"
+    var-4: &MYSQL_USER          "MYSQL_USER=root"
+    var-5: &MYSQL_ROOT_PASSWORD "MYSQL_ROOT_PASSWORD=root"
+    var-6: &REDIS_HOST          "REDIS_HOST=redis"
+    var-7: &APP_HOST            "APP_HOST=app"
+    var-8: &APP_PORT            "APP_PORT=9000"
+
+services:
+    app:
+        build:
+            context: .docker/app
+            args:
+                - *MYSQL_HOST
+                - *MYSQL_PORT
+                - *MYSQL_DATABASE
+                - *MYSQL_USER
+                - *MYSQL_ROOT_PASSWORD
+                - *REDIS_HOST
+                - *APP_HOST
+                - *APP_PORT
+        container_name: app    
+        volumes:
+            - .:/var/www
+        networks:
+            - app-network
+        depends_on:
+            - db
+            - redis
+
+    nginx:
+        build:
+            context: .docker/nginx
+            args:
+                - *APP_HOST
+                - *APP_PORT
+        container_name: nginx
+        restart: always
+        tty: true
+        ports:
+            - "8000:80"
+        volumes:
+            - .:/var/www
+        networks:
+            - app-network
+        depends_on:
+            - app
+
+    db:
+        build: .docker/mysql
+        command: --innodb-use-native-aio=0
+        container_name: db
+        restart: always
+        tty: true
+        ports:
+            - "3306:3306"
+        volumes:
+            -  .docker/mysql/dbdata:/var/lib/mysql
+        environment:
+            - *MYSQL_DATABASE
+            - *MYSQL_USER
+            - *MYSQL_ROOT_PASSWORD
+        networks:
+            - app-network
+        healthcheck:
+            test: ["CMD-SHELL", "dockerize -wait tcp://localhost:3306 -timeout 1s"]
+            interval: 10s
+            timeout: 10s
+            retries: 3
+            start_period: 20s
+
+    redis:
+        image: redis:alpine
+        container_name: redis
+        expose:
+            - 6379
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
+

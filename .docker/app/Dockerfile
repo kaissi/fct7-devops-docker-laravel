@@ -21,7 +21,7 @@ ENV \
 
 USER root
 RUN sed -i "s/#*\s*listen\s\+=\s\+127.0.0.1:9000/listen = 127.0.0.1:${APP_PORT}/;" /usr/local/etc/php-fpm.d/www.conf.default \
-    && sed -i "s/#*\s*listen\s\+=\s\+127.0.0.1:9000/listen = 127.0.0.1:${APP_PORT}/;" /usr/local/etc/php-fpm.d/www.conf \
+        /usr/local/etc/php-fpm.d/www.conf \
     && sed -i "s/#*\s*listen\s\+=\s\+9000/listen = ${APP_PORT}/;" /usr/local/etc/php-fpm.d/zz-docker.conf
 USER www-data
 
