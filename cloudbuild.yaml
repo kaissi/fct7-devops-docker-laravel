@@ -1,15 +1,29 @@
 substitutions:
+
   _DOCKER_COMPOSE_VERSION: 1.25.5
 
 steps:
 
 - id: "Rodando docker-compose"
-  name: 'gcr.io/${PROJECT_ID}/docker-compose:${_DOCKER_COMPOSE_VERSION}'
-  args: ['-f docker-compose.yaml', '-f docker-compose.cloudbuild.yaml', 'up', '--detach', '--build']
+  # name: 'docker/compose:${_DOCKER_COMPOSE_VERSION}'
+  name: 'gcr.io/${PROJECT_ID}/docker-compose:${_DOCKER_COMPOSE_VERSION}'  
+  args: ['-f', 'docker-compose.yaml', '-f', 'docker-compose.cloudbuild.yaml', 'up', '--detach', '--build']
 
 - id: "Rodando docker ps"
   name: 'gcr.io/cloud-builders/docker'
   args: ['ps']
+
+- id: "Mudando user da pasta /var/www"
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['exec', '-t', '-u', 'root', 'app', 'chown', '-R', 'www-data', '/var/www']
+
+- id: "Verificando environment variables"
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['exec', '-t', 'app', 'printenv' ]
+
+- id: "Listando arquivos de /var/www"
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['exec', '-t', 'app', 'ls', '-laht', '/var/www']
 
 - id: "Rodando composer"
   name: 'gcr.io/cloud-builders/docker'

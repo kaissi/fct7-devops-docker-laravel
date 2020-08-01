@@ -13,8 +13,18 @@ x-vars:
 
 services:
     app:
-        image: kaissi/devops-docker-laravel:latest
-
+        build:
+            context: .docker/app
+            args:
+                - *MYSQL_HOST
+                - *MYSQL_PORT
+                - *MYSQL_DATABASE
+                - *MYSQL_USER
+                - *MYSQL_ROOT_PASSWORD
+                - *REDIS_HOST
+                - *APP_HOST
+                - *APP_PORT
+    
     nginx:
         build:
             context: .docker/nginx
@@ -22,7 +32,7 @@ services:
                 - *APP_HOST
                 - *APP_PORT
                 - *DOCKERIZE_VERSION
-
+    
     db:
         build:
             context: .docker/mysql
@@ -32,3 +42,4 @@ services:
             - *MYSQL_DATABASE
             - *MYSQL_USER
             - *MYSQL_ROOT_PASSWORD
+    
