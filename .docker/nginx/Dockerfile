@@ -2,10 +2,11 @@ FROM nginx:1.15.0-alpine
 
 ARG APP_HOST
 ARG APP_PORT
+ARG DOCKERIZE_VERSION
 ENV \
     APP_HOST="${APP_HOST}" \
     APP_PORT="${APP_PORT}" \
-    DOCKERIZE_VERSION="v0.6.1"
+    DOCKERIZE_VERSION="${DOCKERIZE_VERSION}"
 
 RUN rm /etc/nginx/conf.d/default.conf \
     && apk add --no-cache \

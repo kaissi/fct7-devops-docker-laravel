@@ -64,7 +64,8 @@ Na pasta raiz do projeto fazer:
 
 ```bash
 docker build . -t kaissi/devops-docker-laravel-optimized:latest -f Dockerfile.build \
-    --build-arg APP_PORT=9000
+    --build-arg APP_PORT=9000 \
+    --build-arg DOCKERIZE_VERSION=v0.6.1
 ```
 
-Note que o argumento APP_PORT é opcional. Se não passado, irá com o valor padrão 9000
+Note que o argumentos APP_PORT e DOCKERIZE_VERSION são opcionais. Se não passados, irão com os valores padrão definidos no Dockerfile.

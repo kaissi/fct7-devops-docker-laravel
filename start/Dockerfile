@@ -1,6 +1,7 @@
 FROM php:7.3.6-fpm-alpine3.9
 
-ENV DOCKERIZE_VERSION v0.6.1
+ARG DOCKERIZE_VERSION="v0.6.1"
+ENV DOCKERIZE_VERSION="${DOCKERIZE_VERSION}"
 RUN apk add --no-cache \
         openssl \
         shadow \
@@ -29,3 +30,4 @@ VOLUME /var/www
 RUN composer create-project laravel/laravel . \
     && ln -s public html
 
+ENTRYPOINT ["php-fpm"]
