@@ -1,6 +1,7 @@
 FROM mysql:5.7
 
-ENV DOCKERIZE_VERSION v0.6.1
+ARG DOCKERIZE_VERSION
+ENV DOCKERIZE_VERSION="${DOCKERIZE_VERSION}"
 
 RUN apt update \
     && apt install -y --no-install-recommends \

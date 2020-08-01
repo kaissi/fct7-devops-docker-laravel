@@ -1,0 +1,34 @@
+version: '3.8'
+
+x-vars:
+    var-1:  &MYSQL_HOST             "MYSQL_HOST=db"
+    var-2:  &MYSQL_PORT             "MYSQL_PORT=3306"
+    var-3:  &MYSQL_DATABASE         "MYSQL_DATABASE=laravel"
+    var-4:  &MYSQL_USER             "MYSQL_USER=root"
+    var-5:  &MYSQL_ROOT_PASSWORD    "MYSQL_ROOT_PASSWORD=root"
+    var-6:  &REDIS_HOST             "REDIS_HOST=redis"
+    var-7:  &APP_HOST               "APP_HOST=app"
+    var-8:  &APP_PORT               "APP_PORT=9000"
+    var-9:  &DOCKERIZE_VERSION      "DOCKERIZE_VERSION=v0.6.1"
+
+services:
+    app:
+        image: kaissi/devops-docker-laravel:latest
+
+    nginx:
+        build:
+            context: .docker/nginx
+            args:
+                - *APP_HOST
+                - *APP_PORT
+                - *DOCKERIZE_VERSION
+
+    db:
+        build:
+            context: .docker/mysql
+            args:
+                - *DOCKERIZE_VERSION
+        environment:
+            - *MYSQL_DATABASE
+            - *MYSQL_USER
+            - *MYSQL_ROOT_PASSWORD
