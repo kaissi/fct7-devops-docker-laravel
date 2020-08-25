@@ -74,7 +74,10 @@ Note que o argumentos APP_PORT e DOCKERIZE_VERSION são opcionais. Se não passa
 
 kubectl create secret generic mysql-pass --from-literal=password='a1s2d3f4'
 kubectl get secrets
+kubectl describe secrets mysql-pass
 
 kubectl get pvc
+kubectl describe pvc mysql-pv-claim
 
 kubectl get configmaps
+kubectl describe configmaps app-conf
