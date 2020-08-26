@@ -35,6 +35,8 @@ data:
         gzip_static on;
       }
     }
+  index.php: |
+    Code.education Rocks
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -57,6 +59,12 @@ spec:
           items:
             - key: nginx.conf
               path: nginx.conf
+      - name: www-data
+        configMap:
+          name: nginx-conf
+          items:
+            - key: index.php
+              path: index.php
       containers:
       - name: nginx
         image: nginx:1.17-alpine
@@ -64,6 +72,8 @@ spec:
           - mountPath: /etc/nginx/conf.d
             name: nginx-data
             readOnly: true
+          - mountPath: /var/www/public
+            name: www-data
         ports:
         - containerPort: 8080
         resources:
