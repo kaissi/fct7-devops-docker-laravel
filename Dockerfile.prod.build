@@ -1,4 +1,4 @@
-FROM php:7.3.6-fpm-alpine3.9 as builder
+FROM --platform=${BUILDPLATFORM} php:7.3.6-fpm-alpine3.9 as builder
 
 RUN apk add --no-cache \
         mysql-client \
@@ -23,7 +23,7 @@ RUN composer install \
     && npm install \
     && chown -R www-data.www-data /var/www
 
-FROM php:7.3.6-fpm-alpine3.9
+FROM --platform=${TARGETPLATFORM} php:7.3.6-fpm-alpine3.9
 
 ARG MYSQL_HOST
 ARG MYSQL_PORT

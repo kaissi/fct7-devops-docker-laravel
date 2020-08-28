@@ -81,3 +81,5 @@ kubectl describe pvc mysql-pv-claim
 
 kubectl get configmaps
 kubectl describe configmaps app-conf
+
+kubectl apply -f ./k8s --recursive

@@ -18,7 +18,7 @@ data:
     server {
       listen 80;
       index index.php index.html;
-      root /var/www/public;
+      root /usr/share/nginx/html;
 
       location ~ \.php$ {
         try_files $uri = 404;
@@ -72,7 +72,7 @@ spec:
           - mountPath: /etc/nginx/conf.d
             name: nginx-data
             readOnly: true
-          - mountPath: /var/www/public
+          - mountPath: /usr/share/nginx/html
             name: www-data
         ports:
         - containerPort: 80
