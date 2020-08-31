@@ -63,7 +63,6 @@ data:
 
     MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
     MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -81,6 +80,7 @@ spec:
       containers:
         - name: app
           image: img-app-deployment
+          command: [ "/bin/sh", "-c", "./k8s/app/entrypoint.sh" ]
           ports:
           - containerPort: 9000
           env:
