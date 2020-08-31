@@ -1,4 +1,4 @@
-ARG DOCKER_LARAVEL_TAG="latest"
+ARG DOCKER_LARAVEL_TAG="base"
 FROM kaissi/devops-docker-laravel:${DOCKER_LARAVEL_TAG}
 
 ARG MYSQL_HOST

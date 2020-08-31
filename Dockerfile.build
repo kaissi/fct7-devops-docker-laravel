@@ -9,7 +9,7 @@ RUN apk add --no-cache \
 
 WORKDIR /var/www
 
-COPY start/composer-installer.sh /tmp
+COPY .scripts/base/composer-installer.sh /tmp
 
 RUN ln -s public html \
     && /tmp/composer-installer.sh \

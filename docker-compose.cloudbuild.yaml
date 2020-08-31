@@ -13,7 +13,7 @@ x-vars:
 
 services:
     app:
-        image: kaissi/devops-docker-laravel:latest
+        image: kaissi/devops-docker-laravel:base
 
     nginx:
         build:

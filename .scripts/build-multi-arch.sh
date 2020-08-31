@@ -7,7 +7,7 @@ if [ "${ARCHS}" == "all" ]; then
 fi
 
 for arch in ${ARCHS[@]}; do
-    local arch_platform=
+    arch_platform=
     if [ "${arch}" == "armv7" ]; then
         arch_platform="arm/v7"
     elif [ "${arch}" == "armhf" ]; then
