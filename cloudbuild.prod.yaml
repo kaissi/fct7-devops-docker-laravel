@@ -45,7 +45,7 @@ steps:
   name: 'gcr.io/cloud-builders/docker'
   args: ['exec', '-t', 'app', 'php', '/var/www/vendor/bin/phpunit', '-c', '/var/www/phpunit.xml']
 
-- id: "Building image from Dockerfile.prod.build"
+- id: "Obtendo versão do Docker"
   name: 'gcr.io/cloud-builders/docker'
   args: [ 'version' ]
   env: [ 'DOCKER_CLI_EXPERIMENTAL=enabled' ]
