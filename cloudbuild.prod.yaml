@@ -48,8 +48,7 @@ steps:
 - id: "Building image from Dockerfile.prod.build"
   name: 'gcr.io/cloud-builders/docker'
   args: [ 'version' ]
-  env:
-    - 'DOCKER_CLI_EXPERIMENTAL=enabled'
+  env: [ 'DOCKER_CLI_EXPERIMENTAL=enabled' ]
 
 - id: "Building image from Dockerfile.prod.build"
   name: 'gcr.io/cloud-builders/docker'
