@@ -11,13 +11,13 @@ WORKDIR /var/www
 
 COPY .scripts/base/composer-installer.sh /tmp
 
-RUN ln -s public html \
-    && /tmp/composer-installer.sh \
+RUN /tmp/composer-installer.sh \
     && mv composer.phar /usr/local/bin/composer
 
 COPY . /var/www
 
-RUN composer install \
+RUN ln -s public html \
+    && composer install \
     && php artisan cache:clear \
     && chmod -R 775 storage \
     && npm install \
