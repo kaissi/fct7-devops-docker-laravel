@@ -55,6 +55,7 @@ steps:
   name: 'gcr.io/cloud-builders/docker'
   args: [ 'build', '-t', 'gcr.io/${PROJECT_ID}/app-laravel:${SHORT_SHA}', '-f', 'Dockerfile.prod.build', '.']
   env:
+    - 'DOCKER_CLI_EXPERIMENTAL=enabled'
     - 'DOCKER_BUILDKIT=1'
 
 - id: "Pushing image"
