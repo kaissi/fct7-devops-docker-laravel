@@ -80,7 +80,7 @@ spec:
       containers:
         - name: app
           image: img-app-deployment
-          command: [ "/bin/sh", "-c", "./k8s/app/entrypoint.sh" ]
+          command: [ "/bin/sh", "-c", ".k8s/app/entrypoint.sh" ]
           ports:
           - containerPort: 9000
           env:
